@@ -11,6 +11,11 @@ public class Main {
         Beverage bev2 = Beverage.deserializeFromCSV("beverage.csv");
         System.out.println(bev2.getName());
         System.out.println(bev2.getPrice());
+
+        if (Beverage.isEqual(bev1, bev2)){
+            bev2 = null;
+            System.out.println("Beverage already exists. Duplicate removed");
+        }
     }
 }
 

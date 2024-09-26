@@ -1,4 +1,7 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Beverage implements Serializable {
     String name;
@@ -42,23 +45,40 @@ public class Beverage implements Serializable {
         return flOz;
     }
 
-    // Serializers
+    // Serialize object
     public static void serializeToCSV(Beverage beverage, String filename) throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(filename);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(beverage);
-        System.out.println("Beverage serialized to " + filename);
-        objectOutputStream.close();
-        fileOutputStream.close();
-    }
-    public static Beverage deserializeFromCSV(String filename) throws IOException, ClassNotFoundException {
-        FileInputStream fileInputStream = new FileInputStream(filename);
-        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-        Beverage readBev = (Beverage) objectInputStream.readObject();
-        System.out.println("Beverage deserialized from " + filename);
-        objectInputStream.close();
-        fileInputStream.close();
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(beverage);
+            byte[] data = baos.toByteArray();
 
-        return readBev;
+            Path filePath = Paths.get("beverage.csv");
+            Files.write(filePath, data);
+        }
     }
+
+    // Deserialize object
+    public static Beverage deserializeFromCSV(String filename) throws IOException, ClassNotFoundException {
+        Path filePath = Paths.get("beverage.csv");
+
+        byte[] data = Files.readAllBytes(filePath);
+
+        try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
+            return (Beverage) ois.readObject();
+        }
+    }
+
+    public static boolean isEqual(Beverage beverage1, Beverage beverage2) {
+        if (!beverage1.getName().equals(beverage2.getName())) {
+            return false;
+        } else if (beverage1.getPrice() != beverage2.getPrice()) {
+            return false;
+        } else if (beverage1.getCalories() != beverage2.getCalories()) {
+            return false;
+        } else if (beverage1.getFlOz() != beverage2.getFlOz()) {
+            return false;
+        }
+        return true;
+    }
+
 }

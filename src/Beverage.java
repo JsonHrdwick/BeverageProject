@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Beverage {
+public class Beverage implements Serializable {
     String name;
     int price;
     int calories;
@@ -56,7 +56,6 @@ public class Beverage {
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         Beverage readBev = (Beverage) objectInputStream.readObject();
         System.out.println("Beverage deserialized from " + filename);
-        // *** Check for duplicate object code here ***
         objectInputStream.close();
         fileInputStream.close();
 

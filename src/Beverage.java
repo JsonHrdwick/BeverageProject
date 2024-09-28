@@ -2,12 +2,15 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class Beverage implements Serializable {
-    String name;
-    int price;
-    int calories;
-    int flOz;
+    private String name;
+    private int price;
+    private int calories;
+    private int flOz;
 
     // Constructor
     public Beverage(String name, int price, int calories, int flOz) {
@@ -47,38 +50,34 @@ public class Beverage implements Serializable {
 
     // Serialize object
     public static void serializeToCSV(Beverage beverage, String filename) throws IOException {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-             ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-            oos.writeObject(beverage);
-            byte[] data = baos.toByteArray();
+        String filestring = beverage.getName() + "," + beverage.getPrice() + "," + beverage.getCalories() + "," + beverage.getFlOz();
+        Iterable<CharSequence> data = Collections.singleton(filestring);
+        Path path = Paths.get(filename);
+        Files.write(path, data);
 
-            Path filePath = Paths.get("beverage.csv");
-            Files.write(filePath, data);
-        }
     }
 
     // Deserialize object
     public static Beverage deserializeFromCSV(String filename) throws IOException, ClassNotFoundException {
-        Path filePath = Paths.get("beverage.csv");
+        Path path = Paths.get(filename);
+        List<String> filedata = Files.readAllLines(path);
+        String[] data = filedata.getFirst().split(",");
 
-        byte[] data = Files.readAllBytes(filePath);
-
-        try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
-            return (Beverage) ois.readObject();
-        }
+        Beverage newBev = new Beverage(data[0], Integer.parseInt(data[1]), Integer.parseInt(data[2]), Integer.parseInt(data[3]));
+        return newBev;
     }
 
-    public static boolean isEqual(Beverage beverage1, Beverage beverage2) {
-        if (!beverage1.getName().equals(beverage2.getName())) {
-            return false;
-        } else if (beverage1.getPrice() != beverage2.getPrice()) {
-            return false;
-        } else if (beverage1.getCalories() != beverage2.getCalories()) {
-            return false;
-        } else if (beverage1.getFlOz() != beverage2.getFlOz()) {
-            return false;
-        }
-        return true;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Beverage beverage = (Beverage) o;
+        return price == beverage.price && calories == beverage.calories && flOz == beverage.flOz && Objects.equals(name, beverage.name);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price, calories, flOz);
+    }
 }

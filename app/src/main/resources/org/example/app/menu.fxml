@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="462.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.app.Controller">
+   <children>
+      <Button layoutX="78.0" layoutY="171.0" mnemonicParsing="false" onMouseClicked="#onCokeButtonClick" text="Purchase" />
+      <Button layoutX="195.0" layoutY="171.0" mnemonicParsing="false" text="Purchase" />
+      <Button layoutX="318.0" layoutY="171.0" mnemonicParsing="false" text="Purchase" />
+      <Button layoutX="79.0" layoutY="341.0" mnemonicParsing="false" text="Purchase" />
+      <Button layoutX="196.0" layoutY="341.0" mnemonicParsing="false" text="Purchase" />
+      <Button layoutX="319.0" layoutY="341.0" mnemonicParsing="false" text="Purchase" />
+      <Button layoutX="82.0" layoutY="524.0" mnemonicParsing="false" text="Purchase" />
+      <Button layoutX="199.0" layoutY="524.0" mnemonicParsing="false" text="Purchase" />
+      <Button layoutX="322.0" layoutY="524.0" mnemonicParsing="false" text="Purchase" />
+      <ImageView fitHeight="111.0" fitWidth="71.0" layoutX="74.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../assets/coke.jpg" />
+         </image></ImageView>
+      <ImageView fitHeight="111.0" fitWidth="71.0" layoutX="188.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../assets/diet.jpg" />
+         </image></ImageView>
+      <ImageView fitHeight="111.0" fitWidth="71.0" layoutX="311.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../assets/cherry.jpg" />
+         </image></ImageView>
+      <ImageView fitHeight="111.0" fitWidth="71.0" layoutX="74.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../assets/fanta.jpg" />
+         </image></ImageView>
+      <ImageView fitHeight="111.0" fitWidth="71.0" layoutX="188.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../assets/sprite.jpg" />
+         </image></ImageView>
+      <ImageView fitHeight="111.0" fitWidth="71.0" layoutX="311.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../assets/tonic.jpg" />
+         </image></ImageView>
+      <ImageView fitHeight="111.0" fitWidth="71.0" layoutX="77.0" layoutY="399.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../assets/coffee.jpg" />
+         </image></ImageView>
+      <ImageView fitHeight="111.0" fitWidth="71.0" layoutX="191.0" layoutY="399.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../assets/energy.jpg" />
+         </image></ImageView>
+      <ImageView fitHeight="111.0" fitWidth="71.0" layoutX="314.0" layoutY="399.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../assets/water.jpg" />
+         </image></ImageView>
+      <ListView fx:id="beverageList" layoutX="88.0" layoutY="579.0" prefHeight="140.0" prefWidth="291.0" />
+   </children>
+</Pane>

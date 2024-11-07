@@ -87,7 +87,7 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
     public static Soda deserializeFromCSV(String filename) throws IOException {
         Path path = Paths.get(filename);
         List<String> filedata = Files.readAllLines(path);
-        String[] data = filedata.get(0).split(",");
+        String[] data = filedata.getFirst().split(",");
         Files.deleteIfExists(path);
         return formatValues(data);
     }

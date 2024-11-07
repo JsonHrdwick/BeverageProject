@@ -1,5 +1,5 @@
-module BeverageProject.app {
-    requires BeverageProject.core;
+module org.example.app {
+    requires org.example.core;
     requires javafx.controls;
     requires javafx.fxml;
 

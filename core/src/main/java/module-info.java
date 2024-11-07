@@ -1,4 +1,4 @@
-module BeverageProject.core {
+module org.example.core {
     requires xstream;
     exports org.example;
 }

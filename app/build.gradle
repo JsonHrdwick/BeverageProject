@@ -17,8 +17,8 @@ ext {
   junitVersion = '5.10.2'
 }
 
-sourceCompatibility = '17'
-targetCompatibility = '17'
+sourceCompatibility = '21'
+targetCompatibility = '21'
 
 tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
@@ -26,11 +26,11 @@ tasks.withType(JavaCompile) {
 
 application {
   mainModule = 'org.example.app'
-  mainClass = 'org.example.app.Driver'
+  mainClass = 'org.example.app.HelloApplication'
 }
 
 javafx {
-  version = '17'
+  version = '21'
   modules = ['javafx.controls', 'javafx.fxml']
 }
 

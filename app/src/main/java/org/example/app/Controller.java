@@ -113,8 +113,8 @@ public class Controller {
         total = 0.0;
         onPageUpdate();
     }
-    // Yes I am aware the Objects are loosing data when getting recast as Beverages
     public void serializeBeverages() throws IOException {
         BinarySerializer.serializeListToBinary(beverages, SERIAL_DIRECTORY);
     }
+
 }

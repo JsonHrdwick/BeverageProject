@@ -1,33 +1,38 @@
 package org.example;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
-import com.thoughtworks.xstream.security.AnyTypePermission;
 
-import java.io.*;
-import java.nio.ByteBuffer;
+import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
-//@XStreamAlias("SodaClass")
-
-public class Soda implements Beverage, Serializable, Comparable<Soda> {
+public class Coffee implements Beverage, Serializable, Comparable<Coffee> {
     private String name;
     private double price;
     private int calories;
     private int flOz;
+    private int caffeineLevel;
+    private Milk milkType;
+
 
     // Constructor
-    public Soda(String name, double price, int calories, int flOz) {
+    public Coffee(String name, double price, int calories, int flOz, int caffeineLevel, Milk milkType) {
         this.name = name;
         this.price = price;
         this.calories = calories;
         this.flOz = flOz;
+        this.caffeineLevel = caffeineLevel;
+        this.milkType = milkType;
     }
+
 
     // Setters
     public void setName(String name) {
@@ -42,6 +47,9 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
     public void setFlOz(int flOz) {
         this.flOz = flOz;
     }
+    public void setCaffeineLevel(int caffeineLevel) {this.caffeineLevel = caffeineLevel;}
+    public void setMilkType(Milk milkType) {this.milkType = milkType;}
+
 
     // Getters
     public String getName() {
@@ -56,26 +64,28 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
     public int getFlOz() {
         return flOz;
     }
+    public int getCaffeineLevel() { return caffeineLevel; }
+    public Milk getMilkType() {return milkType;}
 
     /**
      *
-     * @param soda Soda object to be serialized
+     * @param coffee Coffee object to be serialized
      * @param filename File directory to serialize to
      * @throws IOException
      */
-    public static void serializeToCSV(Beverage soda, String filename) throws IOException {
+    public static void serializeToCSV(Coffee coffee, String filename) throws IOException {
         Path path = Paths.get(filename);
         Files.createFile(path);
-        Files.writeString(path, prettyPrintCSV(soda), StandardOpenOption.APPEND);
+        Files.writeString(path, prettyPrintCSV(coffee), StandardOpenOption.APPEND);
     }
 
     /**
      *
      * @param filename File path of serialized file
-     * @return Deserialized Soda object
+     * @return Deserialized Coffee object
      * @throws IOException
      */
-    public static Soda deserializeFromCSV(String filename) throws IOException {
+    public static Coffee deserializeFromCSV(String filename) throws IOException {
         Path path = Paths.get(filename);
         List<String> filedata = Files.readAllLines(path);
         String[] data = filedata.get(0).split(",");
@@ -85,15 +95,15 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
 
     /**
      *
-     * @param sodas
+     * @param coffees
      * @param filename
      * @throws IOException
      */
-    public static void setToCSV(Set<Soda> sodas, String filename) throws IOException {
+    public static void setToCSV(Set<Coffee> coffees, String filename) throws IOException {
         Path path = Paths.get(filename);
         Files.createFile(path);
-        for (Beverage soda : sodas) {
-            Files.writeString(path, prettyPrintCSV(soda), StandardOpenOption.APPEND);
+        for (Coffee coffee : coffees) {
+            Files.writeString(path, prettyPrintCSV(coffee), StandardOpenOption.APPEND);
 
         }
     }
@@ -104,30 +114,30 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
      * @return
      * @throws IOException
      */
-    public static TreeSet<Soda> setFromCSV(String filename) throws IOException {
-        TreeSet<Soda> sodaSet = new TreeSet<>();
+    public static TreeSet<Coffee> setFromCSV(String filename) throws IOException {
+        TreeSet<Coffee> coffeeSet = new TreeSet<>();
         Path path = Paths.get(filename);
         List<String> fileData = Files.readAllLines(path);
 
         for (String fileDatum : fileData) {
             String[] data = fileDatum.split(",");
-            sodaSet.add(formatValues(data));
+            coffeeSet.add(formatValues(data));
 
         }
         Files.deleteIfExists(path);
-        return sodaSet;
+        return coffeeSet;
     }
 
     /**
      *
-     * @param soda
+     * @param coffee
      * @param filename
      * @throws IOException
      */
-    public static void serializeToXML(Beverage soda, String filename) throws IOException {
+    public static void serializeToXML(Coffee coffee, String filename) throws IOException {
         XStream xstream = new XStream(new StaxDriver());
-        xstream.processAnnotations(Soda.class);
-        String dataXML = xstream.toXML(soda);
+        xstream.processAnnotations(Coffee.class);
+        String dataXML = xstream.toXML(coffee);
         Path path = Paths.get(filename);
         Files.writeString(path, dataXML);
     }
@@ -138,14 +148,14 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
      * @return
      * @throws IOException
      */
-    public static Soda deserializeFromXML(String filename) throws IOException {
+    public static Coffee deserializeFromXML(String filename) throws IOException {
         Path path = Paths.get(filename);
         XStream xstream = new XStream(new StaxDriver());
-        Class[] types = new Class[]{Soda.class};
+        Class[] types = new Class[]{Coffee.class};
         xstream.allowTypes(types);
         String dataXML = Files.readString(path);
         Files.deleteIfExists(path);
-        return (Soda) xstream.fromXML(dataXML);
+        return (Coffee) xstream.fromXML(dataXML);
     }
 
     /**
@@ -153,7 +163,7 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
      * @param data
      * @return
      */
-    private static Soda formatValues(String[] data){
+    private static Coffee formatValues(String[] data){
         // Default data values
         for (int i = 0; i < data.length; i++) {
             if (data[i] == null || data[i].isEmpty()){
@@ -163,36 +173,37 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
                 data[i] = data[i].trim();
             }
         }
-        return new Soda(data[0].trim(), Double.parseDouble(data[1].trim()), Integer.parseInt(data[2].trim()), Integer.parseInt(data[3].trim()));
+        return new Coffee(data[0].trim(), Double.parseDouble(data[1].trim()), Integer.parseInt(data[2].trim()), Integer.parseInt(data[3].trim()), Integer.parseInt(data[4].trim()), Milk.valueOf(data[5].trim()));
     }
 
     /**
      *
-     * @param soda
+     * @param coffee
      * @return
      */
-    private static String prettyPrintCSV(Beverage soda) {
-        return soda.getName() + "," + soda.getPrice() + "," + soda.getCalories() + "," + soda.getFlOz() + "\n";
+    private static String prettyPrintCSV(Coffee coffee) {
+        return coffee.getName() + "," + coffee.getPrice() + "," + coffee.getCalories() + "," + coffee.getFlOz() + "," + coffee.getCaffeineLevel() + "," + coffee.getMilkType() + "\n";
     }
 
     /**
      *
-     * @param soda
+     * @param coffee
      */
-    public static void sodaPrint(Beverage soda) {
-        System.out.println(soda.getName() + " , $" + soda.getPrice() + " , " + soda.getCalories() + " , " + soda.getFlOz());
+    public static void coffeePrint(Coffee coffee) {
+        System.out.println(coffee.getName() + " , $" + coffee.getPrice() + " , " + coffee.getCalories() + " , " + coffee.getFlOz() + " , " + coffee.getCaffeineLevel() + " , " + coffee.getMilkType());
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Soda beverage = (Soda) o;
-        return price == beverage.price && calories == beverage.calories && flOz == beverage.flOz && Objects.equals(name, beverage.name);
+        Coffee coffee = (Coffee) o;
+        return price == coffee.price && calories == coffee.calories && flOz == coffee.flOz && Objects.equals(name, coffee.name);
     }
 
     @Override
-    public int compareTo(Soda o) {
+    public int compareTo(Coffee o) {
         return -o.name.compareTo(name);
     }
+
 }

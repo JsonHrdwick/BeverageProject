@@ -1,32 +1,36 @@
 package org.example;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
-import com.thoughtworks.xstream.security.AnyTypePermission;
 
-import java.io.*;
-import java.nio.ByteBuffer;
+import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 //@XStreamAlias("SodaClass")
 
-public class Soda implements Beverage, Serializable, Comparable<Soda> {
+public class Water implements Beverage, Serializable, Comparable<Water> {
     private String name;
     private double price;
     private int calories;
     private int flOz;
+    private boolean sparkling;
+
 
     // Constructor
-    public Soda(String name, double price, int calories, int flOz) {
+    public Water(String name, double price, int calories, int flOz, boolean sparkling) {
         this.name = name;
         this.price = price;
         this.calories = calories;
         this.flOz = flOz;
+        this.sparkling = sparkling;
     }
 
     // Setters
@@ -42,6 +46,7 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
     public void setFlOz(int flOz) {
         this.flOz = flOz;
     }
+    public void setSparkling(boolean sparkling) { this.sparkling = sparkling; }
 
     // Getters
     public String getName() {
@@ -56,26 +61,27 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
     public int getFlOz() {
         return flOz;
     }
+    public boolean isSparkling() {return sparkling;}
 
     /**
      *
-     * @param soda Soda object to be serialized
+     * @param water Water object to be serialized
      * @param filename File directory to serialize to
      * @throws IOException
      */
-    public static void serializeToCSV(Beverage soda, String filename) throws IOException {
+    public static void serializeToCSV(Water water, String filename) throws IOException {
         Path path = Paths.get(filename);
         Files.createFile(path);
-        Files.writeString(path, prettyPrintCSV(soda), StandardOpenOption.APPEND);
+        Files.writeString(path, prettyPrintCSV(water), StandardOpenOption.APPEND);
     }
 
     /**
      *
      * @param filename File path of serialized file
-     * @return Deserialized Soda object
+     * @return Deserialized Water object
      * @throws IOException
      */
-    public static Soda deserializeFromCSV(String filename) throws IOException {
+    public static Water deserializeFromCSV(String filename) throws IOException {
         Path path = Paths.get(filename);
         List<String> filedata = Files.readAllLines(path);
         String[] data = filedata.get(0).split(",");
@@ -85,15 +91,15 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
 
     /**
      *
-     * @param sodas
+     * @param waters
      * @param filename
      * @throws IOException
      */
-    public static void setToCSV(Set<Soda> sodas, String filename) throws IOException {
+    public static void setToCSV(Set<Water> waters, String filename) throws IOException {
         Path path = Paths.get(filename);
         Files.createFile(path);
-        for (Beverage soda : sodas) {
-            Files.writeString(path, prettyPrintCSV(soda), StandardOpenOption.APPEND);
+        for (Water water : waters) {
+            Files.writeString(path, prettyPrintCSV(water), StandardOpenOption.APPEND);
 
         }
     }
@@ -104,30 +110,30 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
      * @return
      * @throws IOException
      */
-    public static TreeSet<Soda> setFromCSV(String filename) throws IOException {
-        TreeSet<Soda> sodaSet = new TreeSet<>();
+    public static TreeSet<Water> setFromCSV(String filename) throws IOException {
+        TreeSet<Water> coffeeSet = new TreeSet<>();
         Path path = Paths.get(filename);
         List<String> fileData = Files.readAllLines(path);
 
         for (String fileDatum : fileData) {
             String[] data = fileDatum.split(",");
-            sodaSet.add(formatValues(data));
+            coffeeSet.add(formatValues(data));
 
         }
         Files.deleteIfExists(path);
-        return sodaSet;
+        return coffeeSet;
     }
 
     /**
      *
-     * @param soda
+     * @param water
      * @param filename
      * @throws IOException
      */
-    public static void serializeToXML(Beverage soda, String filename) throws IOException {
+    public static void serializeToXML(Water water, String filename) throws IOException {
         XStream xstream = new XStream(new StaxDriver());
-        xstream.processAnnotations(Soda.class);
-        String dataXML = xstream.toXML(soda);
+        xstream.processAnnotations(Water.class);
+        String dataXML = xstream.toXML(water);
         Path path = Paths.get(filename);
         Files.writeString(path, dataXML);
     }
@@ -138,14 +144,14 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
      * @return
      * @throws IOException
      */
-    public static Soda deserializeFromXML(String filename) throws IOException {
+    public static Water deserializeFromXML(String filename) throws IOException {
         Path path = Paths.get(filename);
         XStream xstream = new XStream(new StaxDriver());
-        Class[] types = new Class[]{Soda.class};
+        Class[] types = new Class[]{Water.class};
         xstream.allowTypes(types);
         String dataXML = Files.readString(path);
         Files.deleteIfExists(path);
-        return (Soda) xstream.fromXML(dataXML);
+        return (Water) xstream.fromXML(dataXML);
     }
 
     /**
@@ -153,7 +159,7 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
      * @param data
      * @return
      */
-    private static Soda formatValues(String[] data){
+    private static Water formatValues(String[] data){
         // Default data values
         for (int i = 0; i < data.length; i++) {
             if (data[i] == null || data[i].isEmpty()){
@@ -163,36 +169,37 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
                 data[i] = data[i].trim();
             }
         }
-        return new Soda(data[0].trim(), Double.parseDouble(data[1].trim()), Integer.parseInt(data[2].trim()), Integer.parseInt(data[3].trim()));
+        return new Water(data[0].trim(), Double.parseDouble(data[1].trim()), Integer.parseInt(data[2].trim()), Integer.parseInt(data[3].trim()), Boolean.parseBoolean(data[4].trim()));
     }
 
     /**
      *
-     * @param soda
+     * @param water
      * @return
      */
-    private static String prettyPrintCSV(Beverage soda) {
-        return soda.getName() + "," + soda.getPrice() + "," + soda.getCalories() + "," + soda.getFlOz() + "\n";
+    private static String prettyPrintCSV(Water water) {
+        return water.getName() + "," + water.getPrice() + "," + water.getCalories() + "," + water.getFlOz() + "," + water.isSparkling() + "\n";
     }
 
     /**
      *
-     * @param soda
+     * @param water
+     *
      */
-    public static void sodaPrint(Beverage soda) {
-        System.out.println(soda.getName() + " , $" + soda.getPrice() + " , " + soda.getCalories() + " , " + soda.getFlOz());
+    public static void sodaPrint(Water water) {
+        System.out.println(water.getName() + " , $" + water.getPrice() + " , " + water.getCalories() + " , " + water.getFlOz());
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Soda beverage = (Soda) o;
-        return price == beverage.price && calories == beverage.calories && flOz == beverage.flOz && Objects.equals(name, beverage.name);
+        Water water = (Water) o;
+        return price == water.price && calories == water.calories && flOz == water.flOz && Objects.equals(name, water.name);
     }
 
     @Override
-    public int compareTo(Soda o) {
+    public int compareTo(Water o) {
         return -o.name.compareTo(name);
     }
 }

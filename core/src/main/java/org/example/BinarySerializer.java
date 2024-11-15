@@ -20,6 +20,7 @@ public class BinarySerializer {
             oos.writeObject(object);
             byte[] data = baos.toByteArray();
             Path filePath = Paths.get(filename);
+            Files.createFile(filePath);
             Files.write(filePath, data);
         }
     }
@@ -47,6 +48,7 @@ public class BinarySerializer {
             oos.writeObject(list);
             byte[] data = baos.toByteArray();
             Path filePath = Paths.get(filename);
+            Files.createFile(filePath);
             Files.write(filePath, data);
         }
     }

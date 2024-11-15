@@ -38,7 +38,7 @@ public class Controller {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         try { beverages = BinarySerializer.deserializeListFromBinary(SERIAL_DIRECTORY);}
-        catch (IOException ignored) { System.out.println(ignored.getMessage());} catch (ClassNotFoundException e) {
+        catch (IOException e) { System.out.println("No serialized file available");} catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         // Load initial data into the table

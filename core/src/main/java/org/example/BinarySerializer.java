@@ -19,9 +19,8 @@ public class BinarySerializer {
              ObjectOutputStream oos = new ObjectOutputStream(baos)) {
             oos.writeObject(object);
             byte[] data = baos.toByteArray();
-            Path filePath = Paths.get(filename);
-            if(!Files.exists(filePath)) {Files.createFile(filePath);}
-            Files.write(filePath, data);
+            File file = new File(filename);
+            Files.write(file.getAbsoluteFile().toPath(), data);
         }
     }
 
@@ -32,7 +31,8 @@ public class BinarySerializer {
      * @throws IOException
      */
     public static Object deserializeFromBinary(String filename) throws IOException {
-        Path path = Paths.get(filename);
+        File file = new File(filename);
+        Path path = file.getAbsoluteFile().toPath();
         byte[] data = Files.readAllBytes(path);
         try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
             Files.deleteIfExists(path);
@@ -47,18 +47,20 @@ public class BinarySerializer {
              ObjectOutputStream oos = new ObjectOutputStream(baos)) {
             oos.writeObject(list);
             byte[] data = baos.toByteArray();
-            Path filePath = Paths.get(filename);
+            File file = new File(filename);
+            Path filePath = file.getAbsoluteFile().toPath();
             if(!Files.exists(filePath)) {Files.createFile(filePath);}
             Files.write(filePath, data);
         }
     }
     public static List<Beverage> deserializeListFromBinary(String filename) throws IOException, ClassNotFoundException {
-        Path path = Paths.get(filename);
-        byte[] data = Files.readAllBytes(path);
+        File file = new File(filename);
+        Path filePath = file.getAbsoluteFile().toPath();
+        byte[] data = Files.readAllBytes(filePath);
 
         try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
             List<Beverage> list = (List<Beverage>) ois.readObject();
-            Files.deleteIfExists(path);
+            Files.deleteIfExists(filePath);
             return list;
         }
     }

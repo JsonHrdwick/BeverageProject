@@ -20,7 +20,8 @@ public class BinarySerializer {
             oos.writeObject(object);
             byte[] data = baos.toByteArray();
             File file = new File(filename);
-            Files.write(file.getAbsoluteFile().toPath(), data);
+            Path filePath = Path.of(file.getAbsolutePath());
+            Files.write(filePath, data);
         }
     }
 
@@ -32,10 +33,10 @@ public class BinarySerializer {
      */
     public static Object deserializeFromBinary(String filename) throws IOException {
         File file = new File(filename);
-        Path path = file.getAbsoluteFile().toPath();
-        byte[] data = Files.readAllBytes(path);
+        Path filePath = Path.of(file.getAbsolutePath());
+        byte[] data = Files.readAllBytes(filePath);
         try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
-            Files.deleteIfExists(path);
+            Files.deleteIfExists(filePath);
             return ois.readObject();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -48,14 +49,14 @@ public class BinarySerializer {
             oos.writeObject(list);
             byte[] data = baos.toByteArray();
             File file = new File(filename);
-            Path filePath = file.getAbsoluteFile().toPath();
+            Path filePath = Path.of(file.getAbsolutePath());
             if(!Files.exists(filePath)) {Files.createFile(filePath);}
             Files.write(filePath, data);
         }
     }
     public static List<Beverage> deserializeListFromBinary(String filename) throws IOException, ClassNotFoundException {
         File file = new File(filename);
-        Path filePath = file.getAbsoluteFile().toPath();
+        Path filePath = Path.of(file.getAbsolutePath());
         byte[] data = Files.readAllBytes(filePath);
 
         try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {

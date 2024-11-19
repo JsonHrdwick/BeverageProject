@@ -13,12 +13,11 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Controller {
     List<Beverage> beverages = new ArrayList<>();
-    final String SERIAL_DIRECTORY = "app/src/main/resources/org/example/app/beverage.bin";
+    final String SERIAL_FILE_NAME = "beverage.bin";
     @FXML
     private TableView<Beverage> beverageTable;
 
@@ -37,7 +36,7 @@ public class Controller {
         // Set up the columns to use the appropriate properties from the Beverage class
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        try { beverages = BinarySerializer.deserializeListFromBinary(SERIAL_DIRECTORY);}
+        try { beverages = BinarySerializer.deserializeListFromBinary(SERIAL_FILE_NAME);}
         catch (IOException e) { System.out.println("No serialized file available");} catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -114,7 +113,7 @@ public class Controller {
         onPageUpdate();
     }
     public void serializeBeverages() throws IOException {
-        BinarySerializer.serializeListToBinary(beverages, SERIAL_DIRECTORY);
+        BinarySerializer.serializeListToBinary(beverages, SERIAL_FILE_NAME);
     }
 
 }

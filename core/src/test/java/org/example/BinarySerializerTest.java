@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BinarySerializerTest {
 
-    final String TEST_DIRECTORY = "../core/src/test/resources/test.bin";
+    final String TEST_DIRECTORY = "test.bin";
     Beverage testSoda;
     List<Beverage> testList = new ArrayList<>();
     @BeforeEach

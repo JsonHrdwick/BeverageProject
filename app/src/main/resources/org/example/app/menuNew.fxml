@@ -1,0 +1,4 @@
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.app.Controller">
+
+</AnchorPane>

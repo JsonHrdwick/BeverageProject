@@ -153,7 +153,7 @@ public class Soda implements Beverage, Serializable, Comparable<Soda> {
      * @param data
      * @return
      */
-    private static Soda formatValues(String[] data){
+    public static Soda formatValues(String[] data){
         // Default data values
         for (int i = 0; i < data.length; i++) {
             if (data[i] == null || data[i].isEmpty()){

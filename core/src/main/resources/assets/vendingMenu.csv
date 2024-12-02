@@ -1,10 +1,10 @@
-Class,Inventory,name,price,calories,flOz,caffeineLevel,milkType,sparkling
-Soda,20,Coca Cola,2.99,260,12,,,
-Soda,14,Diet Coke,2.99,0,12,,,
-Soda,15,Cherry Coke,3.39,280,12,,,
-Soda,15,Fanta,2.99,200,12,,,
-Soda,15,Sprite,2.49,140,12,,,
-Soda,10,Tonic,1.99,140,12,,,
-Soda,18,Red Bull,4.99,400,10,,,
-Coffee,14,Coffee,2.09,80,16,300,SOY,
-Water,20,Water,0.99,0,24,,,FALSE
+Class,img,name,price,calories,flOz,caffeineLevel,milkType,sparkling
+Soda,coke.jpg,Coca Cola,2.99,260,12,,,
+Soda,diet.jpg,Diet Coke,2.99,0,12,,,
+Soda,cherry.jpg,Cherry Coke,3.39,280,12,,,
+Soda,fanta.jpg,Fanta,2.99,200,12,,,
+Soda,sprite.jpg,Sprite,2.49,140,12,,,
+Soda,tonic.jpg,Tonic,1.99,140,12,,,
+Soda,energy.jpg,Red Bull,4.99,400,10,,,
+Coffee,coffee.jpg,Coffee,2.09,80,16,300,SOY,
+Water,water.jpg,Water,0.99,0,24,,,FALSE

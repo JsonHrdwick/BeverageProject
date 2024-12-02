@@ -163,7 +163,7 @@ public class Coffee implements Beverage, Serializable, Comparable<Coffee> {
      * @param data
      * @return
      */
-    private static Coffee formatValues(String[] data){
+    public static Coffee formatValues(String[] data){
         // Default data values
         for (int i = 0; i < data.length; i++) {
             if (data[i] == null || data[i].isEmpty()){

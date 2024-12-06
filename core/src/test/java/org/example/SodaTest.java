@@ -34,8 +34,8 @@ class SodaTest {
     @Test
     void serializeAndDeserializeToCSV() throws IOException {
 
-        Soda.serializeToCSV(testSingleton, "src/test/resources/SerializeTest.csv");
-        Beverage deserializedSoda = Soda.deserializeFromCSV("src/test/resources/SerializeTest.csv");
+        Soda.serializeToCSV(testSingleton, "SerializeTest.csv");
+        Beverage deserializedSoda = Soda.deserializeFromCSV("SerializeTest.csv");
 
 
         // Tests the overridden Soda.equals method
@@ -45,16 +45,16 @@ class SodaTest {
 
     @Test
     void setToAndFromCSV() throws IOException {
-        Soda.setToCSV(testSet, "src/test/resources/SetSerializeTest.csv");
+        Soda.setToCSV(testSet, "SetSerializeTest.csv");
         Set<Soda> deserializeSet = new TreeSet<>();
-        deserializeSet = Soda.setFromCSV("src/test/resources/SetSerializeTest.csv");
+        deserializeSet = Soda.setFromCSV("SetSerializeTest.csv");
 
         assertEquals(testSet, deserializeSet);
     }
     @Test
     void toAndFromXML() throws IOException {
-        Soda.serializeToXML(testSingleton, "src/test/resources/XMLSerializeTest.xml");
-        Beverage newSoda = Soda.deserializeFromXML("src/test/resources/XMLSerializeTest.xml");
+        Soda.serializeToXML(testSingleton, "XMLSerializeTest.xml");
+        Beverage newSoda = Soda.deserializeFromXML("XMLSerializeTest.xml");
 
         assertTrue(testSingleton.equals(newSoda));
     }
@@ -62,8 +62,8 @@ class SodaTest {
     @Test
     void toAndFromBinary() throws IOException {
         Beverage testSoda = new Soda("Coke", 2.99, 200, 32);
-        BinarySerializer.serializeToBinary(testSoda, "src/test/resources/BinarySerializeTest.binary");
-        Beverage newSoda = (Soda) BinarySerializer.deserializeFromBinary("src/test/resources/BinarySerializeTest.binary");
+        BinarySerializer.serializeToBinary(testSoda, "binarySerializeTest.bin");
+        Beverage newSoda = (Soda) BinarySerializer.deserializeFromBinary("binarySerializeTest.bin");
 
         assertTrue(testSoda.equals(newSoda));
     }

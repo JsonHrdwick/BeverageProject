@@ -32,7 +32,7 @@ class BinarySerializerTest {
 
     @Test
     void serializeToAndFromBinary() throws IOException {
-        BinarySerializer.serializeToBinary((Object) testSoda, TEST_DIRECTORY);
+        BinarySerializer.serializeToBinary(testSoda, TEST_DIRECTORY);
         Beverage deserializedBeverage = (Beverage) BinarySerializer.deserializeFromBinary(TEST_DIRECTORY);
         assertEquals(testSoda, deserializedBeverage);
     }
